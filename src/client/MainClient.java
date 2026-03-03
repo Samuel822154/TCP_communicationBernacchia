@@ -1,8 +1,10 @@
 package client;
 
+import java.util.Scanner;
+
 public class MainClient {
     public static void main(String[] args) {
-        System.out.println("AVVIO CLIENT");
+        System.out.println("=== AVVIO CLIENT ===");
 
         Client client = new Client("Mario", "rosso");
 
@@ -12,10 +14,26 @@ public class MainClient {
             return;
         }
 
-        client.scrivi("Ciao, sono " + client.getNome() + " [colore: " + client.getColore() + "]");
-        client.leggi();
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.print("Inserisci un messaggio (oppure 'exit' per uscire): ");
+            String messaggio = scanner.nextLine();
+
+            // Controlla se l'utente vuole uscire (tollerando maiuscole e minuscole)
+            if (messaggio.equalsIgnoreCase("exit")) {
+                client.scrivi("exit");
+                client.leggi(); // legge il messaggio di chiusura dal server
+                break;
+            }
+
+            client.scrivi(messaggio);
+            client.leggi();
+        }
+
+        scanner.close();
         client.chiudi();
 
-        System.out.println("FINE CLIENT");
+        System.out.println("=== FINE CLIENT ===");
     }
 }
